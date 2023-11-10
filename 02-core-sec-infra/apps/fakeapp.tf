@@ -87,6 +87,7 @@ resource "aws_security_group" "fakeapp_sg" {
 
 module "fortios_firewall_config" {
   source  = "sebbycorp/apppolicy/fortigate"
+  version = "1.0.3"
   vdomparam             = "FG-traffic"
   address_name          = "app_team_address"
   associated_interface  = "awsgeneve"
