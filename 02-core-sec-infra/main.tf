@@ -43,3 +43,13 @@ module "core-fw-config" {
   source = "./core-fw-config"
   depends_on = [ module.infrastructure ]
 }
+
+module "apps" {
+  source = "./apps"
+  fwsshkey           = module.infrastructure.fwsshkey
+  customer_vpc_id    = module.infrastructure.customer_vpc_id
+  csprivatesubnetaz1 = module.infrastructure.csprivatesubnetaz1
+  
+  depends_on = [ module.core-fw-config ]
+
+}
