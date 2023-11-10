@@ -49,7 +49,6 @@ module "apps" {
   fwsshkey           = module.infrastructure.fwsshkey
   customer_vpc_id    = module.infrastructure.customer_vpc_id
   csprivatesubnetaz1 = module.infrastructure.csprivatesubnetaz1
-  
   depends_on = [ module.core-fw-config ]
 
 }

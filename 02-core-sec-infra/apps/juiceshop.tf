@@ -1,4 +1,12 @@
 
+variable "fwsshkey" {
+  description = "The fwsshkey where the EC2 instance will be deployed"
+}
+variable "customer_vpc_id" {
+  description = "The customer_vpc_id where the EC2 instance will be deployed"
+}
+variable "csprivatesubnetaz1" {
+}
 
 resource "aws_instance" "juiceshop_ec2" {
   ami             = "ami-0694d931cee176e7d" # Replace with the latest Ubuntu 20.04 AMI in your region
