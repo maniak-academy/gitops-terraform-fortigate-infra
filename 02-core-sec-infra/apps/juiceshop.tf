@@ -6,6 +6,7 @@ variable "customer_vpc_id" {
   description = "The customer_vpc_id where the EC2 instance will be deployed"
 }
 variable "csprivatesubnetaz1" {
+
 }
 
 resource "aws_instance" "juiceshop_ec2" {
