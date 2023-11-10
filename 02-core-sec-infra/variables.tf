@@ -1,2 +1,0 @@
-variable "fortios_token" {
-}

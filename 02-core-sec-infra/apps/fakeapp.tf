@@ -29,17 +29,17 @@ resource "aws_instance" "fakeapp_ec2" {
               cat <<'EOT' > docker-compose-app/docker-compose.yml
               version: "3.3"
               services:
-                frontweb:
+                frontapp:
                   image: nicholasjackson/fake-service:vm-v0.7.7
                   environment:
                     LISTEN_ADDR: 0.0.0.0:9090
                     MESSAGE: "Hello World"
-                    NAME: "frontweb"
+                    NAME: "frontapp"
                     SERVER_TYPE: "http"
                     CONSUL_SERVER: 0.0.0.0
                     CONSUL_DATACENTER: "az1"
                     CENTRAL_CONFIG_DIR: /central
-                    SERVICE_ID: "frontweb-v1"
+                    SERVICE_ID: "frontapp-v1"
                   ports:
                   - "9090:9090"
               EOT

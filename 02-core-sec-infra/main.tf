@@ -14,16 +14,18 @@ terraform {
 terraform {
   backend "s3" {
     encrypt        = true
-    bucket         = "fgs3-om3j-terraform-state"
-    key            = "fgs3-om3j-terraform-state"
+    bucket         = "fgs3-pa97-terraform-state"
+    key            = "fgs3-pa97-terraform-state"
     region         = "eu-west-1"
-    dynamodb_table = "fgs3-om3j-terraform-state-lock-dynamo"
+    dynamodb_table = "fgs3-pa97-terraform-state-lock-dynamo"
   }
 }
 provider "aws" {
   region = "eu-west-1"
 }
 
+variable "fortios_token" {
+}
 
 
 provider "fortios" {
