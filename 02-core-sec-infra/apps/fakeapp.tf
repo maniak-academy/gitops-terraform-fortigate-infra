@@ -92,7 +92,7 @@ module "fortios_firewall_config" {
   address_name          = "app_team_address"
   associated_interface  = "awsgeneve"
   action                = "accept"
-  instance_ip           = aws_instance.app_team_instance.private_ip
+  instance_ip           = aws_instance.fakeapp_ec2.private_ip
   policy_name           = "app_team_policy"
   interface_name        = "awsgeneve"
   services              = ["HTTPS"] 
