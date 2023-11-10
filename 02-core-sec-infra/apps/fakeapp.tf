@@ -12,39 +12,15 @@ resource "aws_instance" "fakeapp_ec2" {
 
   user_data = <<-EOF
               #!/bin/bash
-              sudo apt-get install ca-certificates curl gnupg lsb-release -y
-              sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-              echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
               sudo apt-get update
-              sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-              sudo groupadd docker
-              sudo usermod -aG docker $USER
-              newgrp docker
+              sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+              sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+              sudo apt-get update
+              sudo apt-get install -y docker-ce
               sudo systemctl start docker
               sudo systemctl enable docker
-              sudo curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-              sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-              mkdir docker-compose-app
-              cat <<'EOT' > docker-compose-app/docker-compose.yml
-              version: "3.3"
-              services:
-                frontapp:
-                  image: nicholasjackson/fake-service:vm-v0.7.7
-                  environment:
-                    LISTEN_ADDR: 0.0.0.0:9090
-                    MESSAGE: "Hello World"
-                    NAME: "frontapp"
-                    SERVER_TYPE: "http"
-                    CONSUL_SERVER: 0.0.0.0
-                    CONSUL_DATACENTER: "az1"
-                    CENTRAL_CONFIG_DIR: /central
-                    SERVICE_ID: "frontapp-v1"
-                  ports:
-                  - "9090:9090"
-              EOT
-              cd docker-compose-app
-              sudo docker-compose up -d
+              sudo docker run --rm -d -p 80:80 yeasy/simple-web:latest
               EOF
 
   tags = {
