@@ -89,11 +89,11 @@ module "fortios_firewall_config" {
   source  = "sebbycorp/apppolicy/fortigate"
   version = "1.0.3"
   vdomparam             = "FG-traffic"
-  address_name          = "app_team_address"
+  address_name          = "fakeapp_address"
   associated_interface  = "awsgeneve"
   action                = "accept"
   instance_ip           = aws_instance.fakeapp_ec2.private_ip
-  policy_name           = "app_team_policy"
+  policy_name           = "fakeapp_address_policy"
   interface_name        = "awsgeneve"
   services              = ["HTTP"] 
   nat                   = "disable" 
