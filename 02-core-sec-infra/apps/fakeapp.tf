@@ -85,50 +85,64 @@ resource "aws_security_group" "fakeapp_sg" {
 }
 
 
-resource "fortios_firewall_address" "fakeapp_address" {
-  vdomparam               = "FG-traffic"
-  name                 = "fakeapp_address"
-  associated_interface = "awsgeneve"
-  subnet               = "${aws_instance.fakeapp_ec2.private_ip}/32"
-  type                 = "subnet"
-  visibility           = "enable"
+module "fortios_firewall_config" {
+  source  = "sebbycorp/apppolicy/fortigate"
+  vdomparam             = "FG-traffic"
+  address_name          = "app_team_address"
+  associated_interface  = "awsgeneve"
+  instance_ip           = aws_instance.app_team_instance.private_ip
+  policy_name           = "app_team_policy"
+  interface_name        = "awsgeneve"
+  services              = ["HTTPS"] 
+  nat                   = "disable" 
+  logtraffic            = "all" 
+  ssl_ssh_profile       = "no-inspection"
 }
 
+# resource "fortios_firewall_address" "fakeapp_address" {
+#   vdomparam               = "FG-traffic"
+#   name                 = "fakeapp_address"
+#   associated_interface = "awsgeneve"
+#   subnet               = "${aws_instance.fakeapp_ec2.private_ip}/32"
+#   type                 = "subnet"
+#   visibility           = "enable"
+# }
 
 
-resource "fortios_firewall_policy" "fakeapp_policy" {
-  vdomparam               = "FG-traffic"
-  action                      = "accept"
-  inspection_mode             = "flow"
-  logtraffic                  = "all"
-  name                        = "fakeapp_policy"
-  schedule                    = "always"
-  ssl_ssh_profile             = "no-inspection"
-  status                      = "enable"
-  utm_status                  = "enable"
-  nat                           = "disable"
+
+# resource "fortios_firewall_policy" "fakeapp_policy" {
+#   vdomparam               = "FG-traffic"
+#   action                      = "accept"
+#   inspection_mode             = "flow"
+#   logtraffic                  = "all"
+#   name                        = "fakeapp_policy"
+#   schedule                    = "always"
+#   ssl_ssh_profile             = "no-inspection"
+#   status                      = "enable"
+#   utm_status                  = "enable"
+#   nat                           = "disable"
   
-  dstintf {
-      name = "awsgeneve"
-  }
+#   dstintf {
+#       name = "awsgeneve"
+#   }
 
-  service {
-    name = "ALL"
-  }
+#   service {
+#     name = "ALL"
+#   }
 
-  dstaddr {
-      name = fortios_firewall_address.fakeapp_address.name
-  }
+#   dstaddr {
+#       name = fortios_firewall_address.fakeapp_address.name
+#   }
 
-  srcaddr {
-      name = "all"
-  }
+#   srcaddr {
+#       name = "all"
+#   }
 
-  srcintf {
-      name = "awsgeneve"
-  }
-}
+#   srcintf {
+#       name = "awsgeneve"
+#   }
+# }
 
-output "fakeapp_public_ip" {
-  value = aws_instance.fakeapp_ec2.public_ip
-}
+# output "fakeapp_public_ip" {
+#   value = aws_instance.fakeapp_ec2.public_ip
+# }
